@@ -147,7 +147,15 @@
      */
     function filterApps(query) {
         const cards = document.querySelectorAll('.app-card');
-        const searchTerm = query.toLowerCase().trim();
+        const searchTerm = query ? query.toLowerCase().trim() : '';
+
+        // If search is empty, show all cards
+        if (!searchTerm) {
+            cards.forEach(card => {
+                card.style.display = '';
+            });
+            return;
+        }
 
         cards.forEach(card => {
             const title = card.querySelector('.app-title').textContent.toLowerCase();

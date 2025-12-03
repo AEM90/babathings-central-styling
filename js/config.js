@@ -88,8 +88,3 @@ const appsConfig = [
         status: 'coming-soon'
     }
 ];
-
-// Export for use in app.js
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = appsConfig;
-}
