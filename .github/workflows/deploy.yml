@@ -35,6 +35,13 @@ jobs:
       - name: Build library
         run: npm run build
 
+      - name: Copy demo HTML to dist
+        run: cp dist/index.html dist/demo.html || true
+
+      - name: Create index redirect
+        run: |
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=demo.html"></head><body>Redirecting...</body></html>' > dist/index.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 

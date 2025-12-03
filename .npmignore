@@ -1,0 +1,45 @@
+# Development files
+demo/
+demo.html
+examples/
+vite.config.js
+.github/
+
+# Source files (include src/ for source maps)
+# src/
+
+# Documentation (keep in package)
+# docs/
+# README.md
+# LICENSE
+
+# Old files
+README.old.md
+index.html
+js/
+css/
+assets/
+
+# Git files
+.git/
+.gitignore
+
+# Build artifacts
+node_modules/
+*.log
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary
+tmp/
+*.tmp
+*.temp
