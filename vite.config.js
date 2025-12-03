@@ -18,6 +18,7 @@ export default defineConfig({
         globals: {
           vue: 'Vue'
         },
+        // Ensure CSS is named consistently for easy CDN reference
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'style.css') return 'style.css';
           return assetInfo.name;

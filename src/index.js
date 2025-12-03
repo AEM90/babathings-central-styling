@@ -50,7 +50,8 @@ const BabaThingsPlugin = {
 export default BabaThingsPlugin;
 export { BabaThingsNav, BabaThingsAppCard, defaultApps };
 
-// Auto-install when used as <script> tag
+// Auto-install when used via CDN (Vue 3)
 if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(BabaThingsPlugin);
+  const app = window.Vue.createApp({});
+  app.use(BabaThingsPlugin);
 }
