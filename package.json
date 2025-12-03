@@ -4,10 +4,12 @@
   "description": "Central styling and navigation system for BabaThings subdomain projects - A Vue.js plugin providing passive styling, reusable components, and SEO-optimized navigation",
   "main": "dist/babathings-central-styling.umd.js",
   "module": "dist/babathings-central-styling.es.js",
+  "types": "src/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/babathings-central-styling.es.js",
-      "require": "./dist/babathings-central-styling.umd.js"
+      "require": "./dist/babathings-central-styling.umd.js",
+      "types": "./src/index.d.ts"
     },
     "./style.css": "./dist/style.css"
   },
