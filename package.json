@@ -1,0 +1,48 @@
+{
+  "name": "@babathings/central-styling",
+  "version": "1.0.0",
+  "description": "Central styling and navigation system for BabaThings subdomain projects - A Vue.js plugin providing passive styling, reusable components, and SEO-optimized navigation",
+  "main": "dist/babathings-central-styling.umd.js",
+  "module": "dist/babathings-central-styling.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/babathings-central-styling.es.js",
+      "require": "./dist/babathings-central-styling.umd.js"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AEM90/babathings-central-styling.git"
+  },
+  "keywords": [
+    "vue",
+    "vue-plugin",
+    "styling",
+    "navigation",
+    "babathings",
+    "components",
+    "css",
+    "seo"
+  ],
+  "author": "BabaThings",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0",
+    "vue": "^3.4.0"
+  }
+}

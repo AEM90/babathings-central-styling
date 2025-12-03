@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BabaThings App - Static HTML Example">
+  <title>BabaThings App - Static Example</title>
+  
+  <!-- Load BabaThings CSS from CDN -->
+  <link rel="stylesheet" href="https://aem90.github.io/babathings-central-styling/dist/style.css">
+  
+  <style>
+    .page-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .main-content {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+    }
+    .hero {
+      text-align: center;
+      padding: 3rem 0;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div id="app" class="page-container">
+    <!-- BabaThings Navigation -->
+    <babathings-nav></babathings-nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="hero">
+        <h1>Welcome to My BabaThings App</h1>
+        <p>This is a static HTML page using the BabaThings Central Styling plugin via CDN</p>
+      </div>
+      
+      <div class="content">
+        <h2>Features</h2>
+        <ul>
+          <li>✅ No build step required</li>
+          <li>✅ BabaThings navigation included</li>
+          <li>✅ Responsive design</li>
+          <li>✅ Dark mode support</li>
+          <li>✅ Consistent styling</li>
+        </ul>
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2025 BabaThings.com - All rights reserved</p>
+    </footer>
+  </div>
+
+  <!-- Load Vue 3 from CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <!-- Load BabaThings Plugin from CDN -->
+  <script src="https://aem90.github.io/babathings-central-styling/dist/babathings-central-styling.umd.js"></script>
+  
+  <!-- Initialize App -->
+  <script>
+    const { createApp } = Vue;
+    const BabaThingsPlugin = BabaThingsCentralStyling.default;
+
+    const app = createApp({
+      data() {
+        return {
+          message: 'Hello from Vue!'
+        };
+      }
+    });
+
+    // Use the BabaThings plugin
+    app.use(BabaThingsPlugin);
+    
+    app.mount('#app');
+  </script>
+</body>
+</html>
