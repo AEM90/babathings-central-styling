@@ -2,28 +2,23 @@
 
 ## Quick Integration for Plain HTML/JS Projects
 
-Since your Decision Wheel is a plain HTML/JS project, here's how to integrate the BabaThings styling:
+Since your Decision Wheel is a plain HTML/JS project, here's how to integrate the BabaThings styling via CDN (no local files needed!):
 
-### Option 1: Local Development (Recommended for now)
+### Integration Steps
 
-1. **Make sure the central styling is built:**
-   ```bash
-   cd /Users/aem90/Software/babathings/babathings-central-styling
-   npm run build
-   ```
-
-2. **In your Decision Wheel HTML file, add these to the `<head>`:**
+1. **In your Decision Wheel HTML file, add these to the `<head>`:**
    ```html
-   <link rel="stylesheet" href="../babathings-central-styling/dist/style.css">
+   <!-- BabaThings Central Styling from GitHub Pages CDN -->
+   <link rel="stylesheet" href="https://aem90.github.io/babathings-central-styling/style.css">
    ```
 
-3. **Before your closing `</body>` tag, add:**
+2. **Before your closing `</body>` tag, add:**
    ```html
    <!-- Load Vue 3 from CDN -->
    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
    
-   <!-- Load BabaThings Plugin (local) -->
-   <script src="../babathings-central-styling/dist/babathings-central-styling.umd.js"></script>
+   <!-- Load BabaThings Plugin from GitHub Pages CDN -->
+   <script src="https://aem90.github.io/babathings-central-styling/babathings-central-styling.umd.js"></script>
    
    <!-- Initialize -->
    <script>
@@ -43,7 +38,7 @@ Since your Decision Wheel is a plain HTML/JS project, here's how to integrate th
    </script>
    ```
 
-4. **Add the navigation component in your HTML:**
+3. **Add the navigation component in your HTML:**
    ```html
    <div id="app">
      <babathings-nav></babathings-nav>
@@ -53,18 +48,6 @@ Since your Decision Wheel is a plain HTML/JS project, here's how to integrate th
      </main>
    </div>
    ```
-
-### Option 2: After GitHub Pages Deployment
-
-Once you deploy the central styling to GitHub Pages, update the URLs:
-
-```html
-<!-- In <head> -->
-<link rel="stylesheet" href="https://aem90.github.io/babathings-central-styling/dist/style.css">
-
-<!-- Before </body> -->
-<script src="https://aem90.github.io/babathings-central-styling/dist/babathings-central-styling.umd.js"></script>
-```
 
 ### What You Get
 
