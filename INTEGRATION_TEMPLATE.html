@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Decision Wheel - Make decisions by spinning the wheel">
+  <title>Decision Wheel - BabaThings</title>
+  
+  <!-- Load BabaThings CSS (Use local until deployed to GitHub Pages) -->
+  <link rel="stylesheet" href="../babathings-central-styling/dist/style.css">
+  
+  <style>
+    /* Your Decision Wheel styles */
+    .page-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .main-content {
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      width: 100%;
+    }
+    
+    /* Add your existing Decision Wheel CSS here */
+  </style>
+</head>
+<body>
+  <div id="app" class="page-container">
+    <!-- BabaThings Navigation - This will show links to all your apps -->
+    <babathings-nav></babathings-nav>
+    
+    <!-- Main Content - Your Decision Wheel goes here -->
+    <main class="main-content">
+      <h1>Decision Wheel</h1>
+      
+      <!-- PASTE YOUR EXISTING DECISION WHEEL HTML HERE -->
+      
+    </main>
+  </div>
+
+  <!-- Load Vue 3 from CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  
+  <!-- Load BabaThings Plugin (Use local until deployed) -->
+  <script src="../babathings-central-styling/dist/babathings-central-styling.umd.js"></script>
+  
+  <!-- Initialize BabaThings -->
+  <script>
+    const { createApp } = Vue;
+    const BabaThingsPlugin = BabaThingsCentralStyling.default;
+
+    const app = createApp({
+      data() {
+        return {
+          // Your Decision Wheel data
+        };
+      },
+      methods: {
+        // Your Decision Wheel methods
+      }
+    });
+
+    // Use the BabaThings plugin to get navigation
+    app.use(BabaThingsPlugin);
+    app.mount('#app');
+  </script>
+  
+  <!-- YOUR EXISTING DECISION WHEEL JAVASCRIPT -->
+  <script>
+    // If you have existing JS that doesn't need to be in Vue,
+    // you can keep it here or integrate it into the Vue app above
+  </script>
+</body>
+</html>
