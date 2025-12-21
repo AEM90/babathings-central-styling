@@ -1,34 +1,14 @@
 <template>
   <div class="landing-page">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-bg-effects">
-        <div class="hero-orb hero-orb-1"></div>
-        <div class="hero-orb hero-orb-2"></div>
-        <div class="hero-orb hero-orb-3"></div>
-      </div>
-      
-      <div class="container">
-        <div class="hero-content animate-fade-in">
-          <h1 class="hero-title">
-            <span class="hero-title-line">Welcome to the</span>
-            <span class="hero-title-main text-gradient">Future of Productivity</span>
-          </h1>
-          <p class="hero-subtitle">
-            Discover our collection of innovative tools designed to streamline your workflow, 
-            boost creativity, and make everyday tasks effortless.
-          </p>
-          <div class="hero-cta">
-            <button class="btn btn-primary btn-lg">
-              Explore Tools
-              <span>🚀</span>
-            </button>
-            <button class="btn btn-ghost btn-lg">
-              Learn More
-              <span>💡</span>
-            </button>
-          </div>
+    <!-- AtomWatch Hero Section -->
+    <section class="atomwatch-hero">
+      <div class="atomwatch-container">
+        <div class="atomwatch-display">
+          <div class="time-display">{{ currentTime }}</div>
+          <div class="load-beam" :style="{ animationPlayState: beamRunning ? 'running' : 'paused' }"></div>
+          <div class="date-display">{{ currentDate }}</div>
         </div>
+        <p class="atomwatch-tagline">Atomic Precision. Every Second Counts.</p>
       </div>
     </section>
 
@@ -139,6 +119,10 @@ export default {
   name: 'LandingPage',
   data() {
     return {
+      currentTime: '',
+      currentDate: '',
+      beamRunning: false,
+      updateInterval: null,
       tools: defaultApps,
       features: [
         {
@@ -168,18 +152,61 @@ export default {
         },
         {
           icon: '🚀',
-          title: 'Always Updated',
+          title: 'Always Improving',
           description: 'Regular updates with new features and improvements'
         }
       ]
     };
   },
+  mounted() {
+    this.startClock();
+    this.syncLoadBeam();
+  },
+  beforeUnmount() {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+  },
   methods: {
+    startClock() {
+      this.updateTime();
+      this.updateInterval = setInterval(() => {
+        this.updateTime();
+      }, 100);
+    },
+    
+    updateTime() {
+      const now = new Date();
+      
+      this.currentTime = now.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      
+      this.currentDate = now.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    },
+    
+    syncLoadBeam() {
+      const currentTime = new Date();
+      const millisecondsUntilNextSecond = 1000 - currentTime.getMilliseconds();
+      
+      setTimeout(() => {
+        this.beamRunning = true;
+      }, millisecondsUntilNextSecond);
+    },
+    
     formatStatus(status) {
       const statusMap = {
         'new': 'New',
+        'popular': 'Popular',
         'beta': 'Beta',
-        'coming-soon': 'Soon'
+        'updated': 'Updated'
       };
       return statusMap[status] || status;
     }
@@ -188,62 +215,91 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
 .landing-page {
   min-height: 100vh;
-  padding-top: 80px;
 }
 
-/* Hero Section */
-.hero-section {
-  position: relative;
-  min-height: 90vh;
+/* AtomWatch Hero Section */
+.atomwatch-hero {
+  min-height: 70vh;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  padding: 4rem 2rem;
 }
 
-.hero-bg-effects {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
+.atomwatch-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-  animation: float 20s ease-in-out infinite;
+.atomwatch-display {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.hero-orb-1 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
-  top: -200px;
-  left: -200px;
+.time-display {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 900;
+  color: #00ff88;
+  text-shadow: 
+    0 0 10px #00ff88,
+    0 0 20px #00ff88,
+    0 0 30px #00ff88,
+    0 0 40px #00ff88;
+  letter-spacing: 0.1em;
+  text-align: center;
 }
 
-.hero-orb-2 {
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, var(--secondary-color) 0%, transparent 70%);
-  top: 50%;
-  right: -100px;
-  animation-delay: -5s;
+.load-beam {
+  width: 0%;
+  height: 6px;
+  background: linear-gradient(90deg, #00ff88, #00ffff);
+  box-shadow: 
+    0 0 10px #00ff88,
+    0 0 20px #00ff88;
+  animation: loadBeam 1s linear infinite;
+  border-radius: 4px;
+  max-width: 800px;
+  width: 100%;
 }
 
-.hero-orb-3 {
-  width: 350px;
-  height: 350px;
-  background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
-  bottom: -100px;
-  left: 30%;
-  animation-delay: -10s;
+@keyframes loadBeam {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
-.hero-content {
+.date-display {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-weight: 400;
+  color: #ffffff;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.atomwatch-tagline {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-top: 1rem;
+  letter-spacing: 0.1em;
+}
+
+.section-header {
   position: relative;
   z-index: 1;
   text-align: center;
@@ -477,29 +533,44 @@ export default {
 }
 
 .cta-content {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.cta-title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: var(--space-md);
-}
-
-.cta-subtitle {
-  font-size: 1.25rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-xl);
-}
-
-.cta-actions {
   display: flex;
-  gap: var(--space-md);
-  justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
 /* Responsive Design */
+@media (max-width: 768px) {
+  .atomwatch-hero {
+    min-height: 60vh;
+    padding: 3rem 1rem;
+  }
+  
+  .time-display {
+    letter-spacing: 0.05em;
+  }
+  
+  .load-beam {
+    height: 4px;
+  }
+  
+  .cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .btn-lg {
+    width: 100%;
+  }
+  
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-section {
     min-height: 80vh;
