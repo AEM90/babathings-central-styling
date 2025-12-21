@@ -4,27 +4,25 @@ import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [vue()],
+  base: '/', // Changed for GitHub Pages: use '/babathings-central-styling/' when deploying
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
+    }
+  },
   build: {
-    lib: {
-      entry: resolve(__dirname, 'src/index.js'),
-      name: 'BabaThingsCentralStyling',
-      fileName: (format) => `babathings-central-styling.${format}.js`
-    },
+    outDir: 'dist',
+    assetsDir: 'assets',
     rollupOptions: {
-      // Externalize deps that shouldn't be bundled
-      external: ['vue'],
       output: {
-        // Provide global variables to use in UMD build
-        globals: {
-          vue: 'Vue'
-        },
-        // Ensure CSS is named consistently for easy CDN reference
-        assetFileNames: (assetInfo) => {
-          if (assetInfo.name === 'style.css') return 'style.css';
-          return assetInfo.name;
+        manualChunks: {
+          'vendor': ['vue', 'vue-router']
         }
       }
-    },
-    cssCodeSplit: false
+    }
+  },
+  server: {
+    port: 5173,
+    open: true
   }
 });

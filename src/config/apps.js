@@ -8,7 +8,7 @@ export const defaultApps = [
     id: 'decision-wheel',
     name: 'Decision Wheel',
     description: 'Spin the wheel to make decisions',
-    url: 'https://decision-wheel.babathings.com',
+    url: '/apps/decision-wheel',
     icon: '🎡',
     color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     status: 'new'
@@ -17,7 +17,7 @@ export const defaultApps = [
     id: 'atomwatch',
     name: 'AtomWatch',
     description: 'Track time with atomic precision',
-    url: 'https://atomwatch.babathings.com',
+    url: '/apps/atomwatch',
     icon: '⏱️',
     color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     status: null
@@ -26,7 +26,7 @@ export const defaultApps = [
     id: 'moneyburn',
     name: 'MoneyBurn',
     description: 'Meeting cost calculator',
-    url: 'https://moneyburn.babathings.com',
+    url: '/apps/moneyburn',
     icon: '💰',
     color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     status: null
@@ -35,7 +35,7 @@ export const defaultApps = [
     id: 'soundboard',
     name: 'Agile Soundboard',
     description: 'Fun sounds for agile meetings',
-    url: 'https://soundboard.babathings.com',
+    url: '/apps/soundboard',
     icon: '🎵',
     color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
     status: 'beta'
@@ -44,7 +44,7 @@ export const defaultApps = [
     id: 'brainstorm',
     name: 'Brainstorm',
     description: 'Collaborative idea board',
-    url: 'https://brainstorm.babathings.com',
+    url: '/apps/brainstorm',
     icon: '💡',
     color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     status: 'coming-soon'

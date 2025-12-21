@@ -10,6 +10,48 @@ const routes = [
       title: 'BabaThings - Future of Productivity'
     }
   },
+  // Mini-Apps Routes
+  {
+    path: '/apps/decision-wheel',
+    name: 'DecisionWheel',
+    component: () => import(/* webpackChunkName: "decision-wheel" */ '../views/apps/DecisionWheelApp.vue'),
+    meta: {
+      title: 'Decision Wheel - BabaThings'
+    }
+  },
+  {
+    path: '/apps/atomwatch',
+    name: 'AtomWatch',
+    component: () => import(/* webpackChunkName: "atomwatch" */ '../views/apps/AtomWatchApp.vue'),
+    meta: {
+      title: 'AtomWatch - BabaThings'
+    }
+  },
+  {
+    path: '/apps/moneyburn',
+    name: 'MoneyBurn',
+    component: () => import(/* webpackChunkName: "moneyburn" */ '../views/apps/MoneyBurnApp.vue'),
+    meta: {
+      title: 'MoneyBurn - BabaThings'
+    }
+  },
+  {
+    path: '/apps/soundboard',
+    name: 'Soundboard',
+    component: () => import(/* webpackChunkName: "soundboard" */ '../views/apps/SoundboardApp.vue'),
+    meta: {
+      title: 'Agile Soundboard - BabaThings'
+    }
+  },
+  {
+    path: '/apps/brainstorm',
+    name: 'Brainstorm',
+    component: () => import(/* webpackChunkName: "brainstorm" */ '../views/apps/BrainstormApp.vue'),
+    meta: {
+      title: 'Brainstorm - BabaThings'
+    }
+  },
+  // Information Pages
   {
     path: '/tools',
     name: 'Tools',
