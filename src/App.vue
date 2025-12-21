@@ -50,6 +50,7 @@ export default {
 
 .main-content {
   flex: 1;
+  padding-top: 80px; /* Add space for fixed header */
 }
 
 /* Page Transitions */
