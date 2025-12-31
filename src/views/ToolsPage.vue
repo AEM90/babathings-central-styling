@@ -12,9 +12,10 @@
     <section class="tools-content">
       <div class="container">
         <div class="tools-grid">
-          <div 
+          <router-link
             v-for="tool in tools" 
             :key="tool.id"
+            :to="tool.url"
             class="tool-card glass-card animate-scale-in"
           >
             <div class="tool-card-inner">
@@ -33,7 +34,7 @@
                 <button class="btn btn-primary btn-sm">Launch Tool</button>
               </div>
             </div>
-          </div>
+          </router-link>
         </div>
       </div>
     </section>
@@ -41,60 +42,13 @@
 </template>
 
 <script>
+import { defaultApps } from '../config/apps.js';
+
 export default {
   name: 'ToolsPage',
   data() {
     return {
-      tools: [
-        {
-          id: 'decision-wheel',
-          name: 'Decision Wheel',
-          description: 'Spin the wheel to make random decisions',
-          icon: '🎡',
-          color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          status: 'new'
-        },
-        {
-          id: 'atomwatch',
-          name: 'AtomWatch',
-          description: 'Track time with atomic precision',
-          icon: '⏱️',
-          color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-          status: null
-        },
-        {
-          id: 'moneyburn',
-          name: 'MoneyBurn',
-          description: 'Meeting cost calculator',
-          icon: '💰',
-          color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-          status: null
-        },
-        {
-          id: 'soundboard',
-          name: 'Agile Soundboard',
-          description: 'Fun sounds for agile meetings',
-          icon: '🎵',
-          color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-          status: 'beta'
-        },
-        {
-          id: 'brainstorm',
-          name: 'Brainstorm',
-          description: 'Collaborative idea board',
-          icon: '💡',
-          color: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-          status: 'coming-soon'
-        },
-        {
-          id: 'pomodoro',
-          name: 'Pomodoro Timer',
-          description: 'Focus and productivity timer',
-          icon: '🍅',
-          color: 'linear-gradient(135deg, #ff9a56 0%, #ff6a00 100%)',
-          status: 'coming-soon'
-        }
-      ]
+      tools: defaultApps
     };
   },
   methods: {

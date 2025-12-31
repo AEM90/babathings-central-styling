@@ -59,6 +59,15 @@ export const defaultApps = [
     status: 'new'
   },
   {
+    id: 'coffeegrinder',
+    name: 'Coffee Grinder Logbook',
+    description: 'Track your coffee brewing journey',
+    url: '/apps/coffeegrinder',
+    icon: '☕',
+    color: 'linear-gradient(135deg, #d4a574 0%, #8b6f47 100%)',
+    status: 'new'
+  },
+  {
     id: 'pomodoro',
     name: 'Pomodoro Timer',
     description: 'Focus and productivity timer',

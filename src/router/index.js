@@ -59,6 +59,14 @@ const routes = [
       title: 'Currency Watch - BabaThings'
     }
   },
+  {
+    path: '/apps/coffeegrinder',
+    name: 'CoffeeGrinder',
+    component: () => import(/* webpackChunkName: "coffeegrinder" */ '../views/apps/CoffeeGrinderApp.vue'),
+    meta: {
+      title: 'Coffee Grinder Logbook - BabaThings'
+    }
+  },
   // Information Pages
   {
     path: '/tools',
