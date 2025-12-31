@@ -51,6 +51,14 @@ const routes = [
       title: 'Brainstorm - BabaThings'
     }
   },
+  {
+    path: '/apps/currencywatch',
+    name: 'CurrencyWatch',
+    component: () => import(/* webpackChunkName: "currencywatch" */ '../views/apps/CurrencyWatchApp.vue'),
+    meta: {
+      title: 'Currency Watch - BabaThings'
+    }
+  },
   // Information Pages
   {
     path: '/tools',

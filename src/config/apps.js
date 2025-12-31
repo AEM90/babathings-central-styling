@@ -50,6 +50,15 @@ export const defaultApps = [
     status: 'coming-soon'
   },
   {
+    id: 'currencywatch',
+    name: 'Currency Watch',
+    description: 'Real-time exchange rates',
+    url: '/apps/currencywatch',
+    icon: '💱',
+    color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    status: 'new'
+  },
+  {
     id: 'pomodoro',
     name: 'Pomodoro Timer',
     description: 'Focus and productivity timer',
