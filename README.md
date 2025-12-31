@@ -1,90 +1,105 @@
-# @babathings/central-styling
+# BabaThings - Productivity Mini-Apps
 
-[![npm version](https://img.shields.io/npm/v/@babathings/central-styling.svg)](https://www.npmjs.com/package/@babathings/central-styling)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Vue 3](https://img.shields.io/badge/Vue-3.x-brightgreen.svg)](https://vuejs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF.svg)](https://vitejs.dev/)
 
-> Central styling and navigation system for BabaThings subdomain projects - A Vue.js plugin providing passive styling, reusable components, and SEO-optimized navigation.
+> A modern single-page application featuring a collection of productivity mini-apps built with Vue 3, Vite, and cutting-edge web technologies.
 
-## 🎯 Features
+## 🚀 Live Demo
 
-- **🔌 Easy Integration**: One-line plugin installation in any Vue 3 project
-- **🎨 Passive Styling**: Global CSS that doesn't interfere with your app's styles
-- **🧩 Reusable Components**: Pre-built Vue components for navigation and app cards
-- **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile
-- **🌙 Dark Mode Support**: Automatic dark mode based on user preference
-- **♿ SEO Optimized**: Semantic HTML with proper ARIA labels for accessibility
-- **🚀 CDN Ready**: Serve via CDN or GitHub Pages without npm
-- **📦 Tree-shakeable**: Import only what you need
+**[Visit BabaThings](https://aem90.github.io/babathings-central-styling/)**
 
-## 📦 Installation
+## 🎯 Featured Apps
 
-### Option 1: NPM/Yarn (Recommended)
+- **🎡 Decision Wheel**: Spin the wheel to make tough decisions. Customizable options with smooth animations.
+- **⏱️ AtomWatch**: Atomic precision clock with countdown timer mode. Perfect for events like New Year's Eve or sports matches.
+- **💰 MoneyBurn**: Real-time meeting cost calculator. Track how much money meetings are costing your organization.
+- **💱 Currency Watch**: Live currency exchange rates with conversion tools, historical data, and popular pairs.
+- **🎵 Soundboard**: Agile meeting soundboard (coming soon)
+- **💡 Brainstorm**: Collaborative idea board (coming soon)
+
+## ✨ Features
+
+- **🎨 Modern UI**: Futuristic design with glass-morphism effects and smooth animations
+- **📱 Fully Responsive**: Optimized for desktop, tablet, and mobile devices
+- **⚡ Lightning Fast**: Built with Vite for instant hot module replacement
+- **🌙 Dark Mode**: Beautiful dark theme throughout all apps
+- **🔧 Modular Architecture**: Each app is independently developed and lazy-loaded
+- **♿ Accessible**: ARIA labels and semantic HTML for screen readers
+- **🌐 Real-time Data**: Currency rates and time synchronization
+
+## 💻 Development
+
+### Prerequisites
+
+- Node.js 16+ and npm/yarn
+- Git
+
+### Local Setup
 
 ```bash
-npm install @babathings/central-styling
-# or
-yarn add @babathings/central-styling
+# Clone the repository
+git clone https://github.com/AEM90/babathings-central-styling.git
+cd babathings-central-styling
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-### Option 2: CDN (No build step required)
+### Project Structure
 
-```html
-<!-- Load from CDN -->
-<link rel="stylesheet" href="https://aem90.github.io/babathings-central-styling/dist/style.css">
-<script src="https://aem90.github.io/babathings-central-styling/dist/babathings-central-styling.umd.js"></script>
+```
+babathings-central-styling/
+├── src/
+│   ├── components/          # Shared components
+│   │   ├── BabaThingsNav.vue
+│   │   ├── LandingPage.vue
+│   │   └── ...
+│   ├── views/
+│   │   └── apps/           # Mini-app components
+│   │       ├── DecisionWheelApp.vue
+│   │       ├── AtomWatchApp.vue
+│   │       ├── MoneyBurnApp.vue
+│   │       ├── CurrencyWatchApp.vue
+│   │       └── ...
+│   ├── router/             # Vue Router configuration
+│   ├── config/             # App configurations
+│   └── styles/             # Global styles
+├── docs/                   # Documentation
+└── public/                 # Static assets
 ```
 
-## 🚀 Quick Start
+### Adding New Apps
 
-### Full Plugin Installation (Recommended)
+See [HOW_TO_ADD_APPS.md](./HOW_TO_ADD_APPS.md) for detailed instructions on adding new mini-apps to the platform.
 
-```javascript
-// main.js or main.ts
-import { createApp } from 'vue';
-import App from './App.vue';
-import BabaThingsPlugin from '@babathings/central-styling';
-import '@babathings/central-styling/style.css';
+## 🛠️ Tech Stack
 
-const app = createApp(App);
-app.use(BabaThingsPlugin);
-app.mount('#app');
-```
+- **Vue 3** - Progressive JavaScript framework
+- **Vue Router 4** - Official router for Vue.js
+- **Vite 5** - Next generation frontend tooling
+- **Modern CSS** - Grid, Flexbox, Custom Properties, Animations
+- **External APIs** - Exchange Rate API for currency data
 
-That's it! Now you can use the components anywhere in your app:
+## 🤝 Contributing
 
-```vue
-<template>
-  <div>
-    <BabaThingsNav />
-    <main>
-      <!-- Your app content -->
-    </main>
-  </div>
-</template>
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### Import Only CSS (Minimal Integration)
-
-If you only want the styling without components:
-
-```javascript
-// main.js
-import '@babathings/central-styling/style.css';
-```
-
-### Import Specific Components
-
-```javascript
-import { BabaThingsNav, BabaThingsAppCard } from '@babathings/central-styling';
-import '@babathings/central-styling/style.css';
-
-export default {
-  components: {
-    BabaThingsNav,
-    BabaThingsAppCard
-  }
-};
-```
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## 📖 Components
 

@@ -1,7 +1,7 @@
 {
   "name": "@babathings/central-styling",
   "version": "1.0.0",
-  "description": "Central styling and navigation system for BabaThings subdomain projects - A Vue.js plugin providing passive styling, reusable components, and SEO-optimized navigation",
+  "description": "BabaThings - A collection of productivity mini-apps including Decision Wheel, AtomWatch, MoneyBurn, Currency Watch and more. Built with Vue 3 and Vite.",
   "main": "dist/babathings-central-styling.umd.js",
   "module": "dist/babathings-central-styling.es.js",
   "types": "src/index.d.ts",
