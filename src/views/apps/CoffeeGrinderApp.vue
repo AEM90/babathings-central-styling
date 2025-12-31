@@ -23,11 +23,28 @@
         </div>
       </div>
 
-      <!-- Add New Entry Button -->
-      <button @click="showAddModal = true" class="add-entry-btn">
-        <span class="btn-icon">+</span>
-        Log New Brew
-      </button>
+      <!-- Add New Entry Button & Data Management -->
+      <div class="action-buttons">
+        <button @click="showAddModal = true" class="add-entry-btn">
+          <span class="btn-icon">+</span>
+          Log New Brew
+        </button>
+        <div class="data-actions">
+          <button @click="exportToCSV" class="btn-export" title="Export to CSV">
+            📥 Export
+          </button>
+          <button @click="triggerImportCSV" class="btn-import" title="Import from CSV">
+            📤 Import
+          </button>
+          <input 
+            ref="csvInput" 
+            type="file" 
+            accept=".csv" 
+            @change="importFromCSV"
+            style="display: none"
+          />
+        </div>
+      </div>
 
       <!-- Filter & Search -->
       <div class="filter-section glass-card">
@@ -538,6 +555,164 @@ export default {
         'Cold Brew': 'badge-cold'
       };
       return classes[method] || 'badge-default';
+    },
+    
+    // CSV Export
+    exportToCSV() {
+      if (this.entries.length === 0) {
+        alert('No entries to export');
+        return;
+      }
+
+      // CSV Headers
+      const headers = [
+        'Date', 'Coffee Name', 'Roaster', 'Method', 'Grinder Type',
+        'Grind Setting', 'Weight (g)', 'Water Ratio', 'Temperature (°C)',
+        'Roast Level', 'Brew Time', 'Rating', 'Flavor Notes', 'Notes', 'Image URL'
+      ];
+
+      // Convert entries to CSV rows
+      const rows = this.entries.map(entry => [
+        entry.date,
+        this.escapeCSV(entry.coffeeName),
+        this.escapeCSV(entry.roaster),
+        this.escapeCSV(entry.method),
+        this.escapeCSV(entry.grinderType),
+        this.escapeCSV(entry.grindSetting),
+        entry.weight,
+        entry.waterRatio,
+        entry.temperature,
+        this.escapeCSV(entry.roastLevel),
+        this.escapeCSV(entry.brewTime),
+        entry.rating,
+        this.escapeCSV(entry.flavorNotes.join('; ')),
+        this.escapeCSV(entry.notes),
+        entry.image ? 'base64-image-data' : '' // Note: images are large, marked but not exported
+      ]);
+
+      // Create CSV content
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.join(','))
+      ].join('\n');
+
+      // Download file
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      const timestamp = new Date().toISOString().split('T')[0];
+      
+      link.setAttribute('href', url);
+      link.setAttribute('download', `coffee-logbook-${timestamp}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
+
+    escapeCSV(str) {
+      if (!str) return '';
+      const stringValue = String(str);
+      if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+        return `"${stringValue.replace(/"/g, '""')}"`;
+      }
+      return stringValue;
+    },
+
+    // CSV Import
+    triggerImportCSV() {
+      this.$refs.csvInput.click();
+    },
+
+    async importFromCSV(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const csv = e.target.result;
+          const lines = csv.split('\n');
+          
+          if (lines.length < 2) {
+            alert('CSV file is empty or invalid');
+            return;
+          }
+
+          // Skip header row
+          const dataLines = lines.slice(1).filter(line => line.trim());
+          
+          const importedEntries = dataLines.map(line => {
+            // Simple CSV parser (handles quoted fields)
+            const values = this.parseCSVLine(line);
+            
+            return {
+              id: Date.now() + Math.random(), // Generate unique ID
+              date: values[0] || new Date().toISOString(),
+              coffeeName: values[1] || 'Unknown Coffee',
+              roaster: values[2] || '',
+              method: values[3] || '',
+              grinderType: values[4] || '',
+              grindSetting: values[5] || '',
+              weight: parseFloat(values[6]) || 0,
+              waterRatio: parseFloat(values[7]) || 15.5,
+              temperature: parseFloat(values[8]) || 93,
+              roastLevel: values[9] || '',
+              brewTime: values[10] || '',
+              rating: parseInt(values[11]) || 5,
+              flavorNotes: values[12] ? values[12].split(';').map(n => n.trim()) : [],
+              notes: values[13] || '',
+              image: null // Images not imported from CSV
+            };
+          });
+
+          const confirmImport = confirm(
+            `Import ${importedEntries.length} entries?\n\n` +
+            `This will ADD to your existing ${this.entries.length} entries.\n` +
+            `Note: Images are not included in CSV import.`
+          );
+
+          if (confirmImport) {
+            this.entries = [...importedEntries, ...this.entries];
+            this.saveEntries();
+            alert(`Successfully imported ${importedEntries.length} entries!`);
+          }
+        } catch (error) {
+          console.error('Import error:', error);
+          alert('Error importing CSV file. Please check the file format.');
+        }
+      };
+
+      reader.readAsText(file);
+      event.target.value = ''; // Reset input
+    },
+
+    parseCSVLine(line) {
+      const values = [];
+      let currentValue = '';
+      let insideQuotes = false;
+
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+
+        if (char === '"') {
+          if (insideQuotes && nextChar === '"') {
+            currentValue += '"';
+            i++; // Skip next quote
+          } else {
+            insideQuotes = !insideQuotes;
+          }
+        } else if (char === ',' && !insideQuotes) {
+          values.push(currentValue);
+          currentValue = '';
+        } else {
+          currentValue += char;
+        }
+      }
+      values.push(currentValue); // Push last value
+
+      return values;
     }
   }
 };
@@ -604,10 +779,17 @@ export default {
 }
 
 /* Add Entry Button */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
 .add-entry-btn {
   width: 100%;
   max-width: 400px;
-  margin: 0 auto 2rem;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -630,6 +812,33 @@ export default {
 
 .btn-icon {
   font-size: 1.5rem;
+}
+
+.data-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-export,
+.btn-import {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(212, 165, 116, 0.3);
+  color: #d4a574;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-export:hover,
+.btn-import:hover {
+  background: rgba(212, 165, 116, 0.2);
+  border-color: #d4a574;
+  transform: translateY(-2px);
 }
 
 /* Glass Card */
