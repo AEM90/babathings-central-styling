@@ -173,7 +173,7 @@
             </div>
             <div class="summary-stat">
               <strong>Average Time/Person:</strong>
-              <span>{{ Math.round(currentSession.totalTime / currentSession.participants.length) }}s</span>
+              <span>{{ currentSession.participants.length > 0 ? Math.round(currentSession.totalTime / currentSession.participants.length) : 0 }}s</span>
             </div>
             <div class="summary-stat">
               <strong>Date:</strong>
@@ -270,8 +270,7 @@ export default {
       savedTeams: [],
       sessions: [],
       currentSession: null,
-      showSummary: false,
-      individualTimes: []
+      showSummary: false
     };
   },
   computed: {
@@ -408,7 +407,7 @@ export default {
     },
     nextParticipant() {
       // Record time for current participant
-      const timeSpent = this.timePerPerson - this.timeRemaining;
+      const timeSpent = Math.max(0, this.timePerPerson - this.timeRemaining);
       this.currentSession.individualTimes.push(timeSpent);
       this.currentSession.totalTime += timeSpent;
 
@@ -429,7 +428,7 @@ export default {
     endStandup() {
       if (confirm('Are you sure you want to end the standup?')) {
         // Record time for current participant
-        const timeSpent = this.timePerPerson - this.timeRemaining;
+        const timeSpent = Math.max(0, this.timePerPerson - this.timeRemaining);
         this.currentSession.individualTimes.push(timeSpent);
         this.currentSession.totalTime += timeSpent;
         

@@ -145,14 +145,19 @@ export default {
     },
     validateCount(role) {
       // Ensure count is a valid number and not negative
-      if (role.count === null || role.count === undefined || isNaN(role.count)) {
-        role.count = 0;
-      } else if (role.count < 0) {
-        role.count = 0;
+      let value = role.count;
+      
+      if (value === null || value === undefined || isNaN(value)) {
+        value = 0;
+      } else if (value < 0) {
+        value = 0;
       } else {
         // Round to integer
-        role.count = Math.floor(role.count);
+        value = Math.floor(value);
       }
+      
+      // Update the role count with validated value
+      role.count = value;
     },
     startMeeting() {
       this.meetingStartTime = new Date();

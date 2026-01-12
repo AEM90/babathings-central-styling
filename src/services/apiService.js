@@ -215,7 +215,6 @@ class ApiService {
    */
   async login(email, password) {
     // TODO: Implement AWS Cognito or custom authentication
-    console.log('Login not yet implemented');
     throw new Error('Authentication not yet implemented');
   }
 
@@ -226,7 +225,6 @@ class ApiService {
 
   async register(email, password, username) {
     // TODO: Implement user registration
-    console.log('Registration not yet implemented');
     throw new Error('Registration not yet implemented');
   }
 
