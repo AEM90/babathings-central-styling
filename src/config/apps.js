@@ -89,9 +89,9 @@ export const defaultApps = [
     id: 'standup',
     name: 'Standup Timer',
     description: 'Keep standups on track',
-    url: 'https://standup.babathings.com',
+    url: '/apps/standup',
     icon: '⏰',
     color: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-    status: 'coming-soon'
+    status: null
   }
 ];

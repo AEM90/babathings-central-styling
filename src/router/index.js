@@ -67,6 +67,14 @@ const routes = [
       title: 'Coffee Grinder Logbook - BabaThings'
     }
   },
+  {
+    path: '/apps/standup',
+    name: 'StandupTimer',
+    component: () => import(/* webpackChunkName: "standup" */ '../views/apps/StandupTimerApp.vue'),
+    meta: {
+      title: 'Standup Timer - BabaThings'
+    }
+  },
   // Information Pages
   {
     path: '/tools',
