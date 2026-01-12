@@ -254,10 +254,9 @@ export default {
   font-weight: 900;
   color: #00ff88;
   text-shadow: 
+    0 0 5px #00ff88,
     0 0 10px #00ff88,
-    0 0 20px #00ff88,
-    0 0 30px #00ff88,
-    0 0 40px #00ff88;
+    0 0 15px #00ff88;
   letter-spacing: 0.1em;
   text-align: center;
 }
@@ -267,8 +266,8 @@ export default {
   height: 6px;
   background: linear-gradient(90deg, #00ff88, #00ffff);
   box-shadow: 
-    0 0 10px #00ff88,
-    0 0 20px #00ff88;
+    0 0 5px #00ff88,
+    0 0 10px #00ff88;
   animation: loadBeam 1s linear infinite;
   border-radius: 4px;
   max-width: 800px;

@@ -18,7 +18,7 @@
                 type="number" 
                 min="0"
                 class="count-input"
-                readonly
+                @input="validateCount(role)"
               />
               <button @click="increment(role.id)" class="btn-counter">+</button>
             </div>
@@ -142,6 +142,17 @@ export default {
     decrement(roleId) {
       const role = this.roles.find(r => r.id === roleId);
       if (role && role.count > 0) role.count--;
+    },
+    validateCount(role) {
+      // Ensure count is a valid number and not negative
+      if (role.count === null || role.count === undefined || isNaN(role.count)) {
+        role.count = 0;
+      } else if (role.count < 0) {
+        role.count = 0;
+      } else {
+        // Round to integer
+        role.count = Math.floor(role.count);
+      }
     },
     startMeeting() {
       this.meetingStartTime = new Date();
