@@ -175,7 +175,7 @@ export default {
         });
         // Fill to 8 options
         while (this.options.length < 8) {
-          this.options.push(`Random Chapter`);
+          this.options.push('Random Chapter');
         }
       } else {
         // Show verse references
@@ -189,7 +189,7 @@ export default {
         });
         // Fill to 8 options
         while (this.options.length < 8) {
-          this.options.push(`Random Verse`);
+          this.options.push('Random Verse');
         }
       }
 

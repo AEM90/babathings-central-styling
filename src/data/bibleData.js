@@ -3,6 +3,17 @@
  * Contains information about books, chapters, and verses in the Bible
  */
 
+/**
+ * Generate a cryptographically secure random number between 0 and 1
+ * @returns {number} Random number between 0 and 1
+ */
+function getSecureRandom() {
+  const crypto = window.crypto || window.msCrypto;
+  const randomBuffer = new Uint32Array(1);
+  crypto.getRandomValues(randomBuffer);
+  return randomBuffer[0] / (0xFFFFFFFF + 1);
+}
+
 export const bibleBooks = {
   oldTestament: [
     { name: 'Genesis', chapters: 50, verses: [31, 25, 24, 26, 32, 22, 24, 22, 29, 32, 32, 20, 18, 24, 21, 16, 27, 33, 38, 18, 34, 24, 20, 67, 34, 35, 46, 22, 35, 43, 55, 32, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 22, 33, 26] },
@@ -97,10 +108,7 @@ export function getBooks(testament = 'both') {
  */
 export function getRandomBook(testament = 'both') {
   const books = getBooks(testament);
-  const crypto = window.crypto || window.msCrypto;
-  const randomBuffer = new Uint32Array(1);
-  crypto.getRandomValues(randomBuffer);
-  const randomIndex = Math.floor((randomBuffer[0] / (0xFFFFFFFF + 1)) * books.length);
+  const randomIndex = Math.floor(getSecureRandom() * books.length);
   return books[randomIndex];
 }
 
@@ -112,10 +120,7 @@ export function getRandomBook(testament = 'both') {
  */
 export function getRandomChapter(testament = 'both', book = null) {
   const selectedBook = book || getRandomBook(testament);
-  const crypto = window.crypto || window.msCrypto;
-  const randomBuffer = new Uint32Array(1);
-  crypto.getRandomValues(randomBuffer);
-  const chapterNum = Math.floor((randomBuffer[0] / (0xFFFFFFFF + 1)) * selectedBook.chapters) + 1;
+  const chapterNum = Math.floor(getSecureRandom() * selectedBook.chapters) + 1;
   
   return {
     book: selectedBook.name,
@@ -135,17 +140,11 @@ export function getRandomVerse(testament = 'both', book = null, chapter = null) 
   
   let chapterNum = chapter;
   if (!chapterNum) {
-    const crypto = window.crypto || window.msCrypto;
-    const randomBuffer = new Uint32Array(1);
-    crypto.getRandomValues(randomBuffer);
-    chapterNum = Math.floor((randomBuffer[0] / (0xFFFFFFFF + 1)) * selectedBook.chapters) + 1;
+    chapterNum = Math.floor(getSecureRandom() * selectedBook.chapters) + 1;
   }
   
   const verseCount = selectedBook.verses[chapterNum - 1];
-  const crypto = window.crypto || window.msCrypto;
-  const randomBuffer = new Uint32Array(1);
-  crypto.getRandomValues(randomBuffer);
-  const verseNum = Math.floor((randomBuffer[0] / (0xFFFFFFFF + 1)) * verseCount) + 1;
+  const verseNum = Math.floor(getSecureRandom() * verseCount) + 1;
   
   return {
     book: selectedBook.name,
