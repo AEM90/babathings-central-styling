@@ -3,6 +3,23 @@
     <div class="container">
       <h1>🎡 Decision Wheel</h1>
       
+      <div class="mode-selector">
+        <button 
+          @click="setMode('normal')" 
+          :class="{ active: mode === 'normal' }"
+          class="mode-btn"
+        >
+          📝 Normal Mode
+        </button>
+        <button 
+          @click="setMode('bible')" 
+          :class="{ active: mode === 'bible' }"
+          class="mode-btn"
+        >
+          📖 Bible Mode
+        </button>
+      </div>
+
       <div class="content-wrapper">
         <div class="wheel-section">
           <div class="wheel-container">
@@ -17,7 +34,7 @@
         </div>
 
         <div class="input-section">
-          <div class="input-group">
+          <div v-if="mode === 'normal'" class="input-group">
             <label for="optionsInput">Enter your options:</label>
             <textarea 
               v-model="optionsInput"
@@ -27,8 +44,52 @@
             <div class="help-text">
               Enter one option per line. If you provide less than 8 options, they will be automatically replicated to fill 8 slots.
             </div>
+            <button @click="updateOptions" class="update-btn">UPDATE WHEEL</button>
           </div>
-          <button @click="updateOptions" class="update-btn">UPDATE WHEEL</button>
+
+          <div v-else class="bible-settings">
+            <h3>Bible Settings</h3>
+            
+            <div class="setting-group">
+              <label>Selection Type:</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" v-model="bibleType" value="verse" @change="updateBibleOptions" />
+                  <span>Verse</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" v-model="bibleType" value="chapter" @change="updateBibleOptions" />
+                  <span>Chapter</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" v-model="bibleType" value="book" @change="updateBibleOptions" />
+                  <span>Book</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-group">
+              <label>Testament:</label>
+              <div class="radio-group">
+                <label class="radio-label">
+                  <input type="radio" v-model="testament" value="both" @change="updateBibleOptions" />
+                  <span>Both</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" v-model="testament" value="old" @change="updateBibleOptions" />
+                  <span>Old Testament</span>
+                </label>
+                <label class="radio-label">
+                  <input type="radio" v-model="testament" value="new" @change="updateBibleOptions" />
+                  <span>New Testament</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="help-text">
+              The wheel will randomly select a {{ bibleType }} from the {{ testamentLabel }}.
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -36,6 +97,8 @@
 </template>
 
 <script>
+import { getRandomBook, getRandomChapter, getRandomVerse, getBooks, getSecureRandom } from '@/data/bibleData.js';
+
 export default {
   name: 'DecisionWheelApp',
   data() {
@@ -54,8 +117,18 @@ export default {
       ],
       centerX: 0,
       centerY: 0,
-      radius: 0
+      radius: 0,
+      mode: 'normal', // 'normal' or 'bible'
+      bibleType: 'verse', // 'verse', 'chapter', or 'book'
+      testament: 'both' // 'both', 'old', or 'new'
     };
+  },
+  computed: {
+    testamentLabel() {
+      if (this.testament === 'both') return 'entire Bible';
+      if (this.testament === 'old') return 'Old Testament';
+      return 'New Testament';
+    }
   },
   mounted() {
     this.initCanvas();
@@ -78,6 +151,76 @@ export default {
       const defaultOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
       this.optionsInput = defaultOptions.join('\n');
       this.updateOptions();
+    },
+
+    setMode(newMode) {
+      this.mode = newMode;
+      this.showResult = false;
+      if (newMode === 'normal') {
+        this.loadDefaultOptions();
+      } else {
+        this.updateBibleOptions();
+      }
+    },
+
+    updateBibleOptions() {
+      // Generate representative options based on Bible settings
+      const books = getBooks(this.testament);
+      
+      // Example references are organized with first 4 from Old Testament, last 4 from New Testament
+      const OLD_TESTAMENT_COUNT = 4;
+      
+      if (this.bibleType === 'book') {
+        // Show book names
+        this.options = books.slice(0, 8).map(book => book.name);
+      } else if (this.bibleType === 'chapter') {
+        // Show chapter references (first 4 OT, last 4 NT)
+        this.options = [
+          'Genesis 1', 'Exodus 20', 'Psalms 23', 'Proverbs 3',
+          'Matthew 5', 'John 3', 'Romans 8', 'Revelation 21'
+        ].filter((_, i) => {
+          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
+          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
+          return true;
+        });
+        // Fill to 8 options
+        while (this.options.length < 8) {
+          this.options.push('Random Chapter');
+        }
+      } else {
+        // Show verse references (first 4 OT, last 4 NT)
+        this.options = [
+          'Genesis 1:1', 'Exodus 20:3', 'Psalms 23:1', 'Proverbs 3:5',
+          'Matthew 5:14', 'John 3:16', 'Romans 8:28', 'Revelation 21:4'
+        ].filter((_, i) => {
+          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
+          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
+          return true;
+        });
+        // Fill to 8 options
+        while (this.options.length < 8) {
+          this.options.push('Random Verse');
+        }
+      }
+
+      this.drawWheel();
+    },
+
+    generateBibleSelection() {
+      let result;
+      
+      if (this.bibleType === 'book') {
+        const book = getRandomBook(this.testament);
+        result = book.name;
+      } else if (this.bibleType === 'chapter') {
+        const chapter = getRandomChapter(this.testament);
+        result = `${chapter.book} ${chapter.chapter}`;
+      } else {
+        const verse = getRandomVerse(this.testament);
+        result = `${verse.book} ${verse.chapter}:${verse.verse}`;
+      }
+      
+      return result;
     },
     
     updateOptions() {
@@ -169,10 +312,7 @@ export default {
       this.isSpinning = true;
       this.showResult = false;
 
-      const crypto = window.crypto || window.msCrypto;
-      const randomBuffer = new Uint32Array(1);
-      crypto.getRandomValues(randomBuffer);
-      const randomValue = randomBuffer[0] / (0xFFFFFFFF + 1);
+      const randomValue = getSecureRandom();
       
       const selectedIndex = Math.floor(randomValue * this.options.length);
       const anglePerSegment = (2 * Math.PI) / this.options.length;
@@ -212,7 +352,11 @@ export default {
     },
     
     showResultFunc(index) {
-      this.resultText = this.options[index];
+      if (this.mode === 'bible') {
+        this.resultText = this.generateBibleSelection();
+      } else {
+        this.resultText = this.options[index];
+      }
       this.showResult = true;
     }
   }
@@ -241,6 +385,37 @@ h1 {
   color: #333;
   margin-bottom: 30px;
   font-size: 2.5em;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.mode-btn {
+  padding: 12px 24px;
+  background: #f0f0f0;
+  color: #555;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mode-btn:hover {
+  background: #e8e8e8;
+  border-color: #ccc;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-color: #667eea;
+  box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
 }
 
 .content-wrapper {
@@ -323,6 +498,71 @@ textarea:focus {
   font-size: 12px;
   color: #888;
   margin-top: 5px;
+}
+
+.bible-settings {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e0e0e0;
+}
+
+.bible-settings h3 {
+  margin: 0 0 20px 0;
+  color: #333;
+  font-size: 1.3em;
+}
+
+.setting-group {
+  margin-bottom: 20px;
+}
+
+.setting-group > label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background: white;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: normal;
+}
+
+.radio-label:hover {
+  background: #f0f0f0;
+  border-color: #667eea;
+}
+
+.radio-label input[type="radio"] {
+  margin-right: 10px;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+}
+
+.radio-label input[type="radio"]:checked + span {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.radio-label span {
+  color: #555;
+  font-size: 14px;
 }
 
 .spin-btn,
