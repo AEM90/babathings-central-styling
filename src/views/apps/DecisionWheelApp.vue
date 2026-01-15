@@ -164,42 +164,20 @@ export default {
     },
 
     updateBibleOptions() {
-      // Generate representative options based on Bible settings
-      const books = getBooks(this.testament);
+      // Generate completely random options based on Bible settings
+      this.options = [];
       
-      // Example references are organized with first 4 from Old Testament, last 4 from New Testament
-      const OLD_TESTAMENT_COUNT = 4;
-      
-      if (this.bibleType === 'book') {
-        // Show book names
-        this.options = books.slice(0, 8).map(book => book.name);
-      } else if (this.bibleType === 'chapter') {
-        // Show chapter references (first 4 OT, last 4 NT)
-        this.options = [
-          'Genesis 1', 'Exodus 20', 'Psalms 23', 'Proverbs 3',
-          'Matthew 5', 'John 3', 'Romans 8', 'Revelation 21'
-        ].filter((_, i) => {
-          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
-          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
-          return true;
-        });
-        // Fill to 8 options
-        while (this.options.length < 8) {
-          this.options.push('Random Chapter');
-        }
-      } else {
-        // Show verse references (first 4 OT, last 4 NT)
-        this.options = [
-          'Genesis 1:1', 'Exodus 20:3', 'Psalms 23:1', 'Proverbs 3:5',
-          'Matthew 5:14', 'John 3:16', 'Romans 8:28', 'Revelation 21:4'
-        ].filter((_, i) => {
-          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
-          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
-          return true;
-        });
-        // Fill to 8 options
-        while (this.options.length < 8) {
-          this.options.push('Random Verse');
+      // Generate 8 random options
+      for (let i = 0; i < 8; i++) {
+        if (this.bibleType === 'book') {
+          const book = getRandomBook(this.testament);
+          this.options.push(book.name);
+        } else if (this.bibleType === 'chapter') {
+          const chapter = getRandomChapter(this.testament);
+          this.options.push(`${chapter.book} ${chapter.chapter}`);
+        } else {
+          const verse = getRandomVerse(this.testament);
+          this.options.push(`${verse.book} ${verse.chapter}:${verse.verse}`);
         }
       }
 
@@ -316,7 +294,8 @@ export default {
       
       const selectedIndex = Math.floor(randomValue * this.options.length);
       const anglePerSegment = (2 * Math.PI) / this.options.length;
-      const targetAngle = -(selectedIndex * anglePerSegment + anglePerSegment / 2) - Math.PI / 2;
+      // Pointer is at 3 o'clock (0 radians), so no need to subtract PI/2
+      const targetAngle = -(selectedIndex * anglePerSegment + anglePerSegment / 2);
       
       const minSpins = 8;
       const maxSpins = 10;
@@ -449,14 +428,14 @@ canvas {
 
 .wheel-pointer {
   position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  right: -15px;
+  transform: translateY(-50%);
   width: 0;
   height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 40px solid #ff4444;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 40px solid #ff4444;
   filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.3));
   z-index: 10;
 }
