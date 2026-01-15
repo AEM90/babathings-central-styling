@@ -7,7 +7,7 @@
  * Generate a cryptographically secure random number between 0 and 1
  * @returns {number} Random number between 0 and 1
  */
-function getSecureRandom() {
+export function getSecureRandom() {
   const crypto = window.crypto || window.msCrypto;
   const randomBuffer = new Uint32Array(1);
   crypto.getRandomValues(randomBuffer);

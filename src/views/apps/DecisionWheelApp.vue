@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { getRandomBook, getRandomChapter, getRandomVerse, getBooks } from '@/data/bibleData.js';
+import { getRandomBook, getRandomChapter, getRandomVerse, getBooks, getSecureRandom } from '@/data/bibleData.js';
 
 export default {
   name: 'DecisionWheelApp',
@@ -302,10 +302,7 @@ export default {
       this.isSpinning = true;
       this.showResult = false;
 
-      const crypto = window.crypto || window.msCrypto;
-      const randomBuffer = new Uint32Array(1);
-      crypto.getRandomValues(randomBuffer);
-      const randomValue = randomBuffer[0] / (0xFFFFFFFF + 1);
+      const randomValue = getSecureRandom();
       
       const selectedIndex = Math.floor(randomValue * this.options.length);
       const anglePerSegment = (2 * Math.PI) / this.options.length;
