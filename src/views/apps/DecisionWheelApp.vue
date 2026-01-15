@@ -87,7 +87,7 @@
             </div>
 
             <div class="help-text">
-              The wheel will randomly select a {{ bibleType }} from the {{ testament === 'both' ? 'entire Bible' : testament === 'old' ? 'Old Testament' : 'New Testament' }}.
+              The wheel will randomly select a {{ bibleType }} from the {{ testamentLabel }}.
             </div>
           </div>
         </div>
@@ -122,6 +122,13 @@ export default {
       bibleType: 'verse', // 'verse', 'chapter', or 'book'
       testament: 'both' // 'both', 'old', or 'new'
     };
+  },
+  computed: {
+    testamentLabel() {
+      if (this.testament === 'both') return 'entire Bible';
+      if (this.testament === 'old') return 'Old Testament';
+      return 'New Testament';
+    }
   },
   mounted() {
     this.initCanvas();
@@ -160,17 +167,20 @@ export default {
       // Generate representative options based on Bible settings
       const books = getBooks(this.testament);
       
+      // Example references are organized with first 4 from Old Testament, last 4 from New Testament
+      const OLD_TESTAMENT_COUNT = 4;
+      
       if (this.bibleType === 'book') {
         // Show book names
         this.options = books.slice(0, 8).map(book => book.name);
       } else if (this.bibleType === 'chapter') {
-        // Show chapter references
+        // Show chapter references (first 4 OT, last 4 NT)
         this.options = [
           'Genesis 1', 'Exodus 20', 'Psalms 23', 'Proverbs 3',
           'Matthew 5', 'John 3', 'Romans 8', 'Revelation 21'
         ].filter((_, i) => {
-          if (this.testament === 'old') return i < 4;
-          if (this.testament === 'new') return i >= 4;
+          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
+          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
           return true;
         });
         // Fill to 8 options
@@ -178,13 +188,13 @@ export default {
           this.options.push('Random Chapter');
         }
       } else {
-        // Show verse references
+        // Show verse references (first 4 OT, last 4 NT)
         this.options = [
           'Genesis 1:1', 'Exodus 20:3', 'Psalms 23:1', 'Proverbs 3:5',
           'Matthew 5:14', 'John 3:16', 'Romans 8:28', 'Revelation 21:4'
         ].filter((_, i) => {
-          if (this.testament === 'old') return i < 4;
-          if (this.testament === 'new') return i >= 4;
+          if (this.testament === 'old') return i < OLD_TESTAMENT_COUNT;
+          if (this.testament === 'new') return i >= OLD_TESTAMENT_COUNT;
           return true;
         });
         // Fill to 8 options
